@@ -77,13 +77,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AurumInsight — Indeks Harga Emas Fisik Indonesia" },
+      { title: "Gold Insight — Indeks Harga Emas Fisik Indonesia" },
       {
         name: "description",
         content:
           "Dashboard pemantau harga jual, buyback, dan spread emas fisik Indonesia (Antam, UBS, Galeri24, Pegadaian, Hartadinata) dengan indikasi sinyal MA5/MA20/RSI berbasis histori harian.",
       },
-      { property: "og:title", content: "AurumInsight — Indeks Harga Emas Fisik Indonesia" },
+      { property: "og:title", content: "Gold Insight — Indeks Harga Emas Fisik Indonesia" },
       {
         property: "og:description",
         content:
