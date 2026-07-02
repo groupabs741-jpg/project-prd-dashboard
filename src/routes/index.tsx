@@ -23,6 +23,13 @@ import {
 } from "@/lib/gold.functions";
 import { computeSignal } from "@/lib/signals";
 import { formatDateID, formatDateTimeID, formatDelta, formatIDR, formatPct, formatSourceName } from "@/lib/format";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const catalogQuery = queryOptions({
   queryKey: ["catalog"],
