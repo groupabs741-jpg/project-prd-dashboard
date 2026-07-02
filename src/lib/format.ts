@@ -56,6 +56,6 @@ export function formatDateTimeID(iso: string): string {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-    timeZone: "Asia/Jakarta",
-  }) + " WIB";
+    timeZone: "Asia/Makassar",
+  }) + " WITA";
 }

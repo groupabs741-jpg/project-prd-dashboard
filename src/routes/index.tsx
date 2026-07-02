@@ -141,10 +141,11 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.2em]">
           Indeks Harga Emas Fisik Indonesia
         </p>
-        <LiveClock />
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
+        <LiveClock />
+        <div className="h-8 w-px bg-paper-edge hidden md:block" />
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] font-mono uppercase text-muted-foreground">Sinkronisasi Terakhir</span>
           <span className="text-xs font-mono font-medium flex items-center gap-2">
