@@ -2,6 +2,8 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { queryOptions, useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
+import { Loader2, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
 import {
   Line,
   LineChart,
@@ -86,11 +88,40 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
   const trigger = useServerFn(triggerSync);
   const mutation = useMutation({
     mutationFn: () => trigger(),
-    onSuccess: async () => {
+    onMutate: () => {
+      toast.loading("Mengambil harga terbaru dari 5 toko…", { id: "sync" });
+    },
+    onSuccess: async (res) => {
+      toast.success(`Sinkron selesai — ${res?.count ?? 0} sumber diperbarui`, { id: "sync" });
       await qc.invalidateQueries();
       router.invalidate();
     },
+    onError: (err: Error) => {
+      toast.error(`Sinkron gagal: ${err.message}`, { id: "sync" });
+    },
   });
+
+  const isPending = mutation.isPending;
+  const isSuccess = mutation.isSuccess;
+  const isError = mutation.isError;
+
+  const statusLabel = isPending
+    ? "Sedang menyinkronkan…"
+    : isError
+      ? "Gagal — coba lagi"
+      : isSuccess
+        ? "Baru saja diperbarui"
+        : lastRun
+          ? formatDateTimeID(lastRun.ran_at)
+          : "Belum pernah";
+
+  const statusDotClass = isPending
+    ? "bg-brass animate-pulse"
+    : isError
+      ? "bg-destructive"
+      : isSuccess || lastRun?.status === "success"
+        ? "bg-emerald"
+        : "bg-muted-foreground/40";
 
   return (
     <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-paper-edge pb-8 animate-reveal">
@@ -111,17 +142,34 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] font-mono uppercase text-muted-foreground">Sinkronisasi Terakhir</span>
-          <span className="text-xs font-mono font-medium">
-            {lastRun ? formatDateTimeID(lastRun.ran_at) : "Belum pernah"}
+          <span className="text-xs font-mono font-medium flex items-center gap-2">
+            <span className={`inline-block size-1.5 rounded-full transition-colors ${statusDotClass}`} />
+            {statusLabel}
           </span>
         </div>
         <div className="h-8 w-px bg-paper-edge hidden md:block" />
         <button
           onClick={() => mutation.mutate()}
-          disabled={mutation.isPending}
-          className="px-4 py-2 text-xs font-semibold uppercase tracking-widest bg-emerald text-background rounded-sm hover:opacity-90 transition-opacity disabled:opacity-50"
+          disabled={isPending}
+          aria-busy={isPending}
+          className={`group inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest rounded-sm transition-all duration-200 disabled:cursor-not-allowed ${
+            isPending
+              ? "bg-emerald/70 text-background"
+              : isError
+                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                : "bg-emerald text-background hover:bg-emerald/90 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] active:scale-[0.98]"
+          }`}
         >
-          {mutation.isPending ? "Menyinkronkan…" : "Sinkron sekarang"}
+          {isPending ? (
+            <Loader2 className="size-3.5 animate-spin" />
+          ) : isError ? (
+            <AlertCircle className="size-3.5" />
+          ) : isSuccess ? (
+            <CheckCircle2 className="size-3.5" />
+          ) : (
+            <RefreshCw className="size-3.5 transition-transform group-hover:rotate-90 duration-300" />
+          )}
+          {isPending ? "Menyinkronkan…" : isError ? "Coba Lagi" : "Sinkron Sekarang"}
         </button>
       </div>
     </header>
