@@ -90,10 +90,10 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
       <div>
         <div className="flex items-center gap-3 mb-2">
           <div className="size-9 bg-emerald flex items-center justify-center rounded-sm">
-            <span className="text-background font-display font-bold text-lg">A</span>
+            <span className="text-background font-display font-bold text-lg">G</span>
           </div>
           <h1 className="text-2xl font-display font-semibold tracking-tight">
-            Aurum<span className="italic font-normal opacity-60">Insight</span>
+            Gold<span className="italic font-normal opacity-60"> Insight</span>
           </h1>
         </div>
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.2em]">
