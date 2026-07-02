@@ -167,6 +167,15 @@ function DashboardBody({ catalog }: { catalog: CatalogEntry[] }) {
     if (!weights.includes(weight) && weights[0]) setWeight(weights[0]);
   }, [weights, weight]);
 
+  // History query lives here so both TodaySection (signal) and ChartSection share it
+  const history = useQuery({
+    queryKey: ["history", source, materialType, weight, days],
+    queryFn: () => getHistory({ data: { source, materialType, weight, days } }),
+    enabled: Boolean(source && materialType && weight),
+  });
+  const historyData = history.data ?? [];
+  const signal = useMemo(() => computeSignal(historyData.map((h) => h.sell)), [historyData]);
+
   return (
     <main className="space-y-10">
       <FilterBar
@@ -184,12 +193,11 @@ function DashboardBody({ catalog }: { catalog: CatalogEntry[] }) {
       />
 
       <Suspense fallback={<SectionSkeleton />}>
-        <TodaySection weight={weight} source={source} materialType={materialType} />
+        <TodaySection weight={weight} source={source} materialType={materialType} signal={signal} />
       </Suspense>
 
-      <Suspense fallback={<SectionSkeleton />}>
-        <ChartSection source={source} materialType={materialType} weight={weight} days={days} />
-      </Suspense>
+      <ChartSection history={historyData} isLoading={history.isLoading}
+        source={source} materialType={materialType} weight={weight} days={days} />
     </main>
   );
 }
