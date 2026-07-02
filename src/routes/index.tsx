@@ -3,7 +3,7 @@ import { queryOptions, useMutation, useQuery, useQueryClient, useSuspenseQuery }
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { Loader2, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, RefreshCw, CheckCircle2, AlertCircle, Clock } from "lucide-react";
 import {
   Line,
   LineChart,
@@ -141,6 +141,7 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.2em]">
           Indeks Harga Emas Fisik Indonesia
         </p>
+        <LiveClock />
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
@@ -177,6 +178,44 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
         </button>
       </div>
     </header>
+  );
+}
+
+function LiveClock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const dayName = now.toLocaleDateString("id-ID", { weekday: "long" });
+  const dateStr = now.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const timeStr = now.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  return (
+    <div className="mt-3 flex items-center gap-3">
+      <div className="flex items-center justify-center size-8 rounded-sm bg-brass-soft border border-paper-edge">
+        <Clock className="size-4 text-brass" />
+      </div>
+      <div className="flex flex-col leading-none">
+        <span className="text-[11px] font-display font-medium text-foreground tracking-wide">
+          {dayName}, {dateStr}
+        </span>
+        <span className="text-xs font-mono text-muted-foreground mt-0.5 tabular-nums tracking-tight">
+          {timeStr} WIB
+        </span>
+      </div>
+    </div>
   );
 }
 
