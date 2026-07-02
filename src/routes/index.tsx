@@ -181,6 +181,44 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
   );
 }
 
+function LiveClock() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const dayName = now.toLocaleDateString("id-ID", { weekday: "long" });
+  const dateStr = now.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const timeStr = now.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  return (
+    <div className="mt-3 flex items-center gap-3">
+      <div className="flex items-center justify-center size-8 rounded-sm bg-brass-soft border border-paper-edge">
+        <Clock className="size-4 text-brass" />
+      </div>
+      <div className="flex flex-col leading-none">
+        <span className="text-[11px] font-display font-medium text-foreground tracking-wide">
+          {dayName}, {dateStr}
+        </span>
+        <span className="text-xs font-mono text-muted-foreground mt-0.5 tabular-nums tracking-tight">
+          {timeStr} WIB
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function EmptyState() {
   return (
     <div className="border border-dashed border-paper-edge rounded-lg p-16 text-center animate-reveal">
