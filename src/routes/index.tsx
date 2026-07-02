@@ -335,7 +335,7 @@ function TodaySection({ weight, source, materialType, signal }: {
           }
           hint="Jual vs Buyback"
         />
-        <SignalCard />
+        <SignalCard signal={signal} />
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start animate-reveal">
