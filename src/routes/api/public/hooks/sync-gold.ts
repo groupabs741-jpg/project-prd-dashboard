@@ -52,7 +52,14 @@ async function syncSource(source: string) {
   }
 
   const today = todayIsoWib();
-  const rows: Array<Record<string, unknown>> = [];
+  const rows: Array<{
+    source: string;
+    material_type: string;
+    weight: number;
+    sell_price: number;
+    buyback_price: number;
+    recorded_date: string;
+  }> = [];
   for (const item of items) {
     const weight = toNumber(item.weight);
     const sell = toNumber(item.sellPrice);
