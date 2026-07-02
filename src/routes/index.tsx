@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { queryOptions, useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import {
   Line,
@@ -160,10 +160,10 @@ function DashboardBody({ catalog }: { catalog: CatalogEntry[] }) {
   const [days, setDays] = useState<7 | 30 | 90>(30);
 
   // Keep dependent state consistent when parent selectors change
-  useMemo(() => {
+  useEffect(() => {
     if (!materials.includes(materialType) && materials[0]) setMaterialType(materials[0]);
   }, [materials, materialType]);
-  useMemo(() => {
+  useEffect(() => {
     if (!weights.includes(weight) && weights[0]) setWeight(weights[0]);
   }, [weights, weight]);
 
