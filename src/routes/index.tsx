@@ -141,10 +141,11 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
         <p className="text-muted-foreground text-xs font-medium uppercase tracking-[0.2em]">
           Indeks Harga Emas Fisik Indonesia
         </p>
-        <LiveClock />
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
+        <LiveClock />
+        <div className="h-8 w-px bg-paper-edge hidden md:block" />
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] font-mono uppercase text-muted-foreground">Sinkronisasi Terakhir</span>
           <span className="text-xs font-mono font-medium flex items-center gap-2">
@@ -182,28 +183,36 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
 }
 
 function LiveClock() {
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    setNow(new Date());
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const dayName = now.toLocaleDateString("id-ID", { weekday: "long" });
+  if (!now) return null;
+
+  const opts: Intl.DateTimeFormatOptions = {
+    timeZone: "Asia/Makassar",
+    hour12: false,
+  };
+  const dayName = now.toLocaleDateString("id-ID", { ...opts, weekday: "long" });
   const dateStr = now.toLocaleDateString("id-ID", {
+    ...opts,
     day: "numeric",
     month: "long",
     year: "numeric",
   });
   const timeStr = now.toLocaleTimeString("id-ID", {
+    ...opts,
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: false,
   });
 
   return (
-    <div className="mt-3 flex items-center gap-3">
+    <div className="flex items-center gap-3">
       <div className="flex items-center justify-center size-8 rounded-sm bg-brass-soft border border-paper-edge">
         <Clock className="size-4 text-brass" />
       </div>
@@ -212,7 +221,7 @@ function LiveClock() {
           {dayName}, {dateStr}
         </span>
         <span className="text-xs font-mono text-muted-foreground mt-0.5 tabular-nums tracking-tight">
-          {timeStr} WIB
+          {timeStr} WITA
         </span>
       </div>
     </div>
@@ -224,7 +233,7 @@ function EmptyState() {
     <div className="border border-dashed border-paper-edge rounded-lg p-16 text-center animate-reveal">
       <p className="font-display text-2xl mb-3">Belum ada data harga</p>
       <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-        Klik <span className="font-semibold">Sinkron sekarang</span> di kanan atas untuk mengambil harga terbaru dari 5 toko (Aneka Logam, Galeri24, Pegadaian, Logam Mulia, Hartadinata). Setelah itu, sinkronisasi harian berjalan otomatis pukul 10:00 WIB.
+        Klik <span className="font-semibold">Sinkron sekarang</span> di kanan atas untuk mengambil harga terbaru dari 5 toko (Aneka Logam, Galeri24, Pegadaian, Logam Mulia, Hartadinata). Setelah itu, sinkronisasi harian berjalan otomatis pukul 00:00 WITA.
       </p>
     </div>
   );
