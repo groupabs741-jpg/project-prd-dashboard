@@ -30,11 +30,11 @@ function toNumber(v: unknown): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function todayIsoWib(): string {
-  // Convert current UTC to Asia/Jakarta (WIB, UTC+7) date
+function todayIsoWita(): string {
+  // Convert current UTC to Asia/Makassar (WITA, UTC+8) date
   const now = new Date();
-  const wib = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-  return wib.toISOString().slice(0, 10);
+  const wita = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+  return wita.toISOString().slice(0, 10);
 }
 
 async function syncSource(source: string) {
