@@ -132,7 +132,6 @@ export const getLastSync = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 export const triggerSync = createServerFn({ method: "POST" }).handler(async () => {
-  // Fire the internal sync route
   const { getRequestHost } = await import("@tanstack/react-start/server");
   const host = getRequestHost();
   const proto = host.startsWith("localhost") ? "http" : "https";
@@ -140,5 +139,6 @@ export const triggerSync = createServerFn({ method: "POST" }).handler(async () =
     method: "POST",
   });
   if (!res.ok) throw new Error(`Sync failed: HTTP ${res.status}`);
-  return (await res.json()) as { ok: boolean; results: unknown[] };
+  const body = (await res.json()) as { ok: boolean; results: Array<Record<string, unknown>> };
+  return { ok: body.ok, count: body.results.length };
 });
