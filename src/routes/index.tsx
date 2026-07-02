@@ -127,9 +127,13 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
     <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-paper-edge pb-8 animate-reveal">
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <div className="size-9 bg-emerald flex items-center justify-center rounded-sm">
-            <span className="text-background font-display font-bold text-lg">G</span>
-          </div>
+          <img
+            src="/logo-icon.png"
+            alt="Gold Insight"
+            width={36}
+            height={36}
+            className="size-9 object-contain rounded-sm"
+          />
           <h1 className="text-2xl font-display font-semibold tracking-tight">
             Gold<span className="italic font-normal opacity-60"> Insight</span>
           </h1>
