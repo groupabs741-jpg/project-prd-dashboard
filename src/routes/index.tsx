@@ -144,8 +144,6 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
-        <LiveClock />
-        <div className="h-8 w-px bg-paper-edge hidden md:block" />
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] font-mono uppercase text-muted-foreground">Sinkronisasi Terakhir</span>
           <span className="text-xs font-mono font-medium flex items-center gap-2">
@@ -154,29 +152,32 @@ function DashboardHeader({ syncLog }: { syncLog: Awaited<ReturnType<typeof getLa
           </span>
         </div>
         <div className="h-8 w-px bg-paper-edge hidden md:block" />
-        <button
-          onClick={() => mutation.mutate()}
-          disabled={isPending}
-          aria-busy={isPending}
-          className={`group inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest rounded-sm transition-all duration-200 disabled:cursor-not-allowed ${
-            isPending
-              ? "bg-emerald/70 text-background"
-              : isError
-                ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                : "bg-emerald text-background hover:bg-emerald/90 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] active:scale-[0.98]"
-          }`}
-        >
-          {isPending ? (
-            <Loader2 className="size-3.5 animate-spin" />
-          ) : isError ? (
-            <AlertCircle className="size-3.5" />
-          ) : isSuccess ? (
-            <CheckCircle2 className="size-3.5" />
-          ) : (
-            <RefreshCw className="size-3.5 transition-transform group-hover:rotate-90 duration-300" />
-          )}
-          {isPending ? "Menyinkronkan…" : isError ? "Coba Lagi" : "Sinkron Sekarang"}
-        </button>
+        <div className="flex flex-col items-end gap-2">
+          <LiveClock />
+          <button
+            onClick={() => mutation.mutate()}
+            disabled={isPending}
+            aria-busy={isPending}
+            className={`group inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-widest rounded-sm transition-all duration-200 disabled:cursor-not-allowed ${
+              isPending
+                ? "bg-emerald/70 text-background"
+                : isError
+                  ? "bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  : "bg-emerald text-background hover:bg-emerald/90 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.3)] active:scale-[0.98]"
+            }`}
+          >
+            {isPending ? (
+              <Loader2 className="size-3.5 animate-spin" />
+            ) : isError ? (
+              <AlertCircle className="size-3.5" />
+            ) : isSuccess ? (
+              <CheckCircle2 className="size-3.5" />
+            ) : (
+              <RefreshCw className="size-3.5 transition-transform group-hover:rotate-90 duration-300" />
+            )}
+            {isPending ? "Menyinkronkan…" : isError ? "Coba Lagi" : "Sinkron Sekarang"}
+          </button>
+        </div>
       </div>
     </header>
   );
