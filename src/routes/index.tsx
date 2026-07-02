@@ -282,7 +282,12 @@ const todayQueryOptions = (weight: number) =>
     queryFn: () => getTodayPrices({ data: { weight } }),
   });
 
-function TodaySection({ weight, source, materialType }: { weight: number; source: string; materialType: string }) {
+function TodaySection({ weight, source, materialType, signal }: {
+  weight: number;
+  source: string;
+  materialType: string;
+  signal: import("@/lib/signals").SignalResult;
+}) {
   const { data } = useQuery(todayQueryOptions(weight));
   const latest = data?.latest ?? [];
   const previous = data?.previous ?? {};
