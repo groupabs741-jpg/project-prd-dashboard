@@ -382,13 +382,15 @@ function KpiCard({
   );
 }
 
-function SignalCard() {
+function SignalCard({ signal }: { signal: import("@/lib/signals").SignalResult }) {
   return (
     <div className="bg-emerald text-background p-5 rounded-lg shadow-lg relative overflow-hidden">
       <span className="text-[10px] font-mono uppercase opacity-70 mb-4 block tracking-widest">Status Sinyal</span>
-      <div id="signal-slot">
-        <p className="text-sm opacity-80">Menghitung…</p>
+      <div className="flex items-center gap-2 mb-1">
+        <div className={`size-2 rounded-full bg-background ${signal.status === "insufficient" ? "opacity-40" : "animate-pulse"}`} />
+        <span className="text-lg font-display font-bold tracking-tight">{signal.label}</span>
       </div>
+      <p className="text-xs opacity-80 leading-relaxed">{signal.reason}</p>
     </div>
   );
 }
