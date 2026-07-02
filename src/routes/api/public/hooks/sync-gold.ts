@@ -51,7 +51,7 @@ async function syncSource(source: string) {
     throw new Error(`Empty response from ${source}`);
   }
 
-  const today = todayIsoWib();
+  const today = todayIsoWita();
   const rows: Array<{
     source: string;
     material_type: string;
