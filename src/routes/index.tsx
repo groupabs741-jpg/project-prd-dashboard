@@ -260,19 +260,26 @@ function SelectField({
   options: Array<{ value: string; label: string }>;
 }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <label className="text-[10px] font-mono uppercase text-muted-foreground tracking-widest">
         {label}
       </label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="bg-background border border-paper-edge rounded-md px-3 py-2 text-sm font-medium focus:outline-none focus:ring-1 focus:ring-brass"
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="bg-background border border-paper-edge rounded-md px-3 py-2 text-sm font-medium focus:ring-1 focus:ring-brass h-auto shadow-none hover:border-paper-edge/80 transition-colors cursor-pointer">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent className="bg-card border border-paper-edge rounded-md shadow-lg">
+          {options.map((o) => (
+            <SelectItem
+              key={o.value}
+              value={o.value}
+              className="text-sm font-medium focus:bg-paper-edge/40 focus:text-foreground cursor-pointer"
+            >
+              {o.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
