@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gold_prices: {
+        Row: {
+          buyback_price: number
+          created_at: string
+          id: number
+          material_type: string
+          recorded_date: string
+          sell_price: number
+          source: string
+          spread: number | null
+          weight: number
+        }
+        Insert: {
+          buyback_price: number
+          created_at?: string
+          id?: number
+          material_type: string
+          recorded_date: string
+          sell_price: number
+          source: string
+          spread?: number | null
+          weight: number
+        }
+        Update: {
+          buyback_price?: number
+          created_at?: string
+          id?: number
+          material_type?: string
+          recorded_date?: string
+          sell_price?: number
+          source?: string
+          spread?: number | null
+          weight?: number
+        }
+        Relationships: []
+      }
+      sync_runs: {
+        Row: {
+          error_message: string | null
+          id: number
+          item_count: number
+          ran_at: string
+          source: string
+          status: string
+        }
+        Insert: {
+          error_message?: string | null
+          id?: number
+          item_count?: number
+          ran_at?: string
+          source: string
+          status: string
+        }
+        Update: {
+          error_message?: string | null
+          id?: number
+          item_count?: number
+          ran_at?: string
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
