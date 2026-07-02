@@ -211,10 +211,22 @@ function LiveClock() {
     second: "2-digit",
   });
 
+  const sec = now.getSeconds();
+  const tickRotation = sec * 6;
+
   return (
     <div className="flex items-center gap-3">
-      <div className="flex items-center justify-center size-8 rounded-sm bg-brass-soft border border-paper-edge">
-        <Clock className="size-4 text-brass" />
+      <div className="relative flex items-center justify-center size-9 rounded-full bg-gradient-to-br from-[#f7f4ec] to-[#ebe7d9] border border-[#dcd6c4] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8),0_2px_6px_-2px_rgba(0,0,0,0.08)]">
+        <div className="absolute inset-0 rounded-full border border-brass/20" />
+        <div className="relative size-5 text-brass">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-5">
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" style={{ transform: `rotate(${tickRotation}deg)`, transformOrigin: '12px 12px', transition: 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)' }} />
+          </svg>
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="size-1 rounded-full bg-brass" />
+          </span>
+        </div>
       </div>
       <div className="flex flex-col leading-none">
         <span className="text-[11px] font-display font-medium text-foreground tracking-wide">
