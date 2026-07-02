@@ -479,38 +479,15 @@ function AnalysisSidebar() {
 // -- Chart section --
 
 function ChartSection({
-  source, materialType, weight, days,
+  history, isLoading, source, materialType, weight, days,
 }: {
+  history: Awaited<ReturnType<typeof getHistory>>;
+  isLoading: boolean;
   source: string;
   materialType: string;
   weight: number;
   days: 7 | 30 | 90;
 }) {
-  const { data, isLoading } = useQuery({
-    queryKey: ["history", source, materialType, weight, days],
-    queryFn: () => getHistory({ data: { source, materialType, weight, days } }),
-    enabled: Boolean(source && materialType && weight),
-  });
-
-  const history = data ?? [];
-  const signal = computeSignal(history.map((h) => h.sell));
-
-  // Inject signal state into the SignalCard placeholder via portal-like re-render.
-  // Simpler: render both here — but SignalCard was rendered above. We instead expose
-  // signal via a small DOM inject.
-  if (typeof document !== "undefined") {
-    const slot = document.getElementById("signal-slot");
-    if (slot) {
-      slot.innerHTML = `
-        <div class="flex items-center gap-2 mb-1">
-          <div class="size-2 rounded-full bg-background ${signal.status === "insufficient" ? "opacity-40" : "animate-pulse"}"></div>
-          <span class="text-lg font-display font-bold tracking-tight">${signal.label}</span>
-        </div>
-        <p class="text-xs opacity-80 leading-relaxed">${signal.reason}</p>
-      `;
-    }
-  }
-
   const withMA = useMemo(() => {
     return history.map((h, i) => {
       const window5 = history.slice(Math.max(0, i - 4), i + 1).map((x) => x.sell);
