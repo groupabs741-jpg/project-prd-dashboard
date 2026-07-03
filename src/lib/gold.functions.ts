@@ -132,7 +132,7 @@ export const getLastSync = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 export const triggerSync = createServerFn({ method: "POST" }).handler(async () => {
-  const { runSync } = await import("@/routes/api/public/hooks/sync-gold");
+  const { runSync } = await import("@/lib/sync-gold.server");
   const results = await runSync();
   return { ok: true, count: results.length, results };
 });
