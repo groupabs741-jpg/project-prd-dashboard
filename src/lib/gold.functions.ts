@@ -132,13 +132,7 @@ export const getLastSync = createServerFn({ method: "GET" }).handler(async () =>
 });
 
 export const triggerSync = createServerFn({ method: "POST" }).handler(async () => {
-  const { getRequestHost } = await import("@tanstack/react-start/server");
-  const host = getRequestHost();
-  const proto = host.startsWith("localhost") ? "http" : "https";
-  const res = await fetch(`${proto}://${host}/api/public/hooks/sync-gold`, {
-    method: "POST",
-  });
-  if (!res.ok) throw new Error(`Sync failed: HTTP ${res.status}`);
-  const body = (await res.json()) as { ok: boolean; results: Array<Record<string, unknown>> };
-  return { ok: body.ok, count: body.results.length };
+  const { runSync } = await import("@/lib/sync-gold.server");
+  const results = await runSync();
+  return { ok: true, count: results.length, results };
 });
